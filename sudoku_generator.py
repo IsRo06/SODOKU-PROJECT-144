@@ -19,20 +19,29 @@ class SudokuGenerator:
       print()
 
   def valid_in_row(self, row, num):
-    if num in self.board[row] == True:
-      return False
-    elif num in self.board[row] == False:
-      return True
-    else:
-      print("Error")
+    part = self.board[row]
+    for i in part:
+      if int(i) == int(num):
+        return False
+    return True
 
   def valid_in_col(self, col, num):
-    if num in self.board[col] == True:
-      return False
-    elif num in self.board[col] == False:
-      return True
-    else:
-      print("Error")
+    col_values = []
+
+    for row in range(9):
+      col_values += [self.board[row][col]]
+    
+    for i in col_values:
+      if int(i) == int(num):
+        return False
+    return True
+
+    # if num in self.board[col] == True:
+    #   return False
+    # elif num in self.board[col] == False:
+    #   return True
+    # else:
+    #   print("Error")
     
   def valid_in_box(self, row_start, col_start, num):
     not_in_box = True
