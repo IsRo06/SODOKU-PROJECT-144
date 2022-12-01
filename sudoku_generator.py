@@ -5,7 +5,7 @@ class SudokuGenerator:
   def __init__(self, row_length, removed_cells):
     self.row_length = row_length
     self.removed_cells = removed_cells
-    self.board = [[0 for j in range(9)] for i in range(9)]
+    self.board = [[0 for j in range(self.row_length)] for i in range(self.row_length)]
     self.box_length = int(math.sqrt(self.row_length))
   
   def get_board(self):
@@ -104,7 +104,11 @@ class SudokuGenerator:
     not_in_col = self.valid_in_col(col, num)
     not_in_box = self.valid_in_box(row, col, num)
 
-    if not_in_row and not_in_col and not_in_box == True:
+    if not_in_row == True:
+      return True 
+    if not_in_col == True:
+      return True
+    if not_in_box == True:
       return True
     else:
       return False
@@ -265,31 +269,31 @@ class SudokuGenerator:
 	boolean (whether or not we could solve the board)
   '''
   def fill_remaining(self, row, col):
-      if (col >= self.row_length and row < self.row_length - 1):
-          row += 1
-          col = 0
-      if row >= self.row_length and col >= self.row_length:
-          return True
-      if row < self.box_length:
-          if col < self.box_length:
-              col = self.box_length
-      elif row < self.row_length - self.box_length:
-          if col == int(row // self.box_length * self.box_length):
-              col += self.box_length
-      else:
-          if col == self.row_length - self.box_length:
-              row += 1
-              col = 0
-              if row >= self.row_length:
-                  return True
-      
-      for num in range(1, self.row_length + 1):
-          if self.is_valid(row, col, num):
-              self.board[row][col] = num
-              if self.fill_remaining(row, col + 1):
-                  return True
-              self.board[row][col] = 0
-      return False
+        if (col >= self.row_length and row < self.row_length - 1):
+            row += 1
+            col = 0
+        if row >= self.row_length and col >= self.row_length:
+            return True
+        if row < self.box_length:
+            if col < self.box_length:
+                col = self.box_length
+        elif row < self.row_length - self.box_length:
+            if col == int(row // self.box_length * self.box_length):
+                col += self.box_length
+        else:
+            if col == self.row_length - self.box_length:
+                row += 1
+                col = 0
+                if row >= self.row_length:
+                    return True
+
+        for num in range(1, self.row_length + 1):
+            if self.is_valid(row, col, num):
+                self.board[row][col] = num
+                if self.fill_remaining(row, col + 1):
+                    return True
+                self.board[row][col] = 0
+        return False
 
   '''
   DO NOT CHANGE
