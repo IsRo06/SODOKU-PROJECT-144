@@ -1,7 +1,6 @@
 import math, random
 
 class SudokuGenerator:
-  
   def __init__(self, row_length, removed_cells):
     self.row_length = row_length
     self.removed_cells = removed_cells
@@ -36,13 +35,6 @@ class SudokuGenerator:
         return False
     return True
 
-    # if num in self.board[col] == True:
-    #   return False
-    # elif num in self.board[col] == False:
-    #   return True
-    # else:
-    #   print("Error")
-    
   def valid_in_box(self, row_start, col_start, num):
     not_in_box = True
 
@@ -50,15 +42,15 @@ class SudokuGenerator:
       for row in range(0,3):
         if col_start < 3 and col_start >= 0:
           for col in range(0,3):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         elif col_start < 6:
           for col in range(3,6):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         elif col_start < 9:
           for col in range(6,9):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         else:
           print("Error")
@@ -66,15 +58,15 @@ class SudokuGenerator:
       for row in range(3,6):
         if col_start < 3 and col_start >= 0:
           for col in range(0,3):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         elif col_start < 6:
           for col in range(3,6):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         elif col_start < 9:
           for col in range(6,9):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         else:
           print("Error")
@@ -82,15 +74,15 @@ class SudokuGenerator:
       for row in range(6,9):
         if col_start < 3 and col_start >= 0:
           for col in range(0,3):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         elif col_start < 6:
           for col in range(3,6):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         elif col_start < 9:
           for col in range(6,9):
-            if col == num:
+            if self.board[row][col] == num:
               not_in_box = False
         else:
           print("Error")
@@ -103,87 +95,17 @@ class SudokuGenerator:
     not_in_row = self.valid_in_row(row, num)
     not_in_col = self.valid_in_col(col, num)
     not_in_box = self.valid_in_box(row, col, num)
-
-    if not_in_row == True:
-      return True 
-    if not_in_col == True:
-      return True
-    if not_in_box == True:
-      return True
-    else:
-      return False
     
+    if not_in_row == False:
+      return False 
+    elif not_in_col == False:
+      return False
+    elif not_in_box == False:
+      return False
+    else:
+      return True
+
   def fill_box(self, row_start, col_start):
-
-    # if row_start < 3 and row_start >= 0:
-    #   for row in range(0,3):
-    #     if col_start < 3 and col_start >= 0:
-    #       for col in range(0,3):
-    #         if col == None:
-    #           pass
-    #           self.board[row][col]
-    #         else:
-    #           pass
-    #     elif col_start < 6:
-    #       for col in range(3,6):
-    #         if col == num:
-    #           not_in_box = False
-    #     elif col_start < 9:
-    #       for col in range(6,9):
-    #         if col == num:
-    #           not_in_box = False
-    #     else:
-    #       print("Error")
-    # elif row_start < 6:
-    #   for row in range(3,6):
-    #     if col_start < 3 and col_start >= 0:
-    #       for col in range(0,3):
-    #         if col == num:
-    #           not_in_box = False
-    #     elif col_start < 6:
-    #       for col in range(3,6):
-    #         if col == num:
-    #           not_in_box = False
-    #     elif col_start < 9:
-    #       for col in range(6,9):
-    #         if col == num:
-    #           not_in_box = False
-    #     else:
-    #       print("Error")
-    # elif row_start < 9:
-    #   for row in range(6,9):
-    #     if col_start < 3 and col_start >= 0:
-    #       for col in range(0,3):
-    #         if col == num:
-    #           not_in_box = False
-    #     elif col_start < 6:
-    #       for col in range(3,6):
-    #         if col == num:
-    #           not_in_box = False
-    #     elif col_start < 9:
-    #       for col in range(6,9):
-    #         if col == num:
-    #           not_in_box = False
-    #     else:
-    #       print("Error")  
-
-    # if row_start < 3 and row_start >= 0:
-    #   start_row = 0
-    # elif row_start < 6:
-    #   start_row = 3
-    # elif row_start < 9:
-    #   start_row = 6
-    # else:
-    #   print("Error")
-
-    # if col_start < 3 and col_start >= 0:
-    #   start_col = 0
-    # elif col_start < 6:
-    #   start_col = 3
-    # elif col_start < 9:
-    #   start_col = 6
-    # else:
-    #   print("Error")
 
     nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     for row in range(3):
@@ -194,7 +116,6 @@ class SudokuGenerator:
 
 
         self.board[row_start+row][col_start+col] = num
-
 
 
   def fill_diagonal(self):
@@ -237,12 +158,7 @@ class SudokuGenerator:
       if row == 9:
         row = 0
 
-
-    # list_positions = [[0,0],[0,1]]
-    # random.shuffle(list_positions)
-    # for i in range(0,30):
-    #   position = list_positions.pop(0)
-      
+     
 
 
 
@@ -328,3 +244,12 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+
+# The bit of code that actually runs everthing else
+if __name__ == '__main__':
+    x = generate_sudoku(9, 30)
+    print(x)
+    for i in x:
+        for j in i:
+            print(j, end=' ')
+        print()
