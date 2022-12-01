@@ -328,11 +328,3 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
-
-if __name__ == '__main__':
-    x = generate_sudoku(9, 30)
-    print(x)
-    for i in x:
-        for j in i:
-            print(j, end=' ')
-        print()
