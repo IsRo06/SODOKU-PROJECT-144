@@ -4,10 +4,6 @@ from constants import *
 from sudoku_generator import *
 from cell import *
 
-#initialization of variables
-pygame.init()
-pygame.display.set_caption("Sudoku Group 12^2")
-cells = 0
 
 def draw_lines(): #draws line in board
     #prints horizontal line
@@ -16,43 +12,60 @@ def draw_lines(): #draws line in board
     #prints vertical line
     for i in range (1,9):
         pygame.draw.line(SCREEN, LINE_COLOR, (i* SQUARE_SIZE, 0), (i* SQUARE_SIZE, HEIGHT), LINE_WIDTH)
+def generate_py_board(cell_number):
+    psudo_board = generate_sudo(9, cell_number)
+    psudo_board = psudo_board[1]
+    return psudo_board
+
+def pre_fill_board(cell_number, board_to_use):
+    board = SudokuGenerator(9, cell_number)
+    board.draw()
 
 
-def draw_numbers(cell_removed): #draws the numbers on the
-    draw_lines()
-    three = Cell("1" ,5, 4, HEIGHT, WIDTH)
-    three.draw(SCREEN)
+    # Credit to https://www.geeksforgeeks.org/building-and-visualizing-sudoku-game-using-pygame/ for code inspo
+    for i in range (9):
+        for j in range(9):
+            if board_to_use[i][j] !=0:
+
+                #populates board
+                pygame_board = ACTUAL_FONT.render(str(board_to_use[i][j]), 1, (0,0,0))
+                SCREEN.blit (pygame_board, (i* SQUARE_SIZE+15, j* SQUARE_SIZE +15))
 
 def sudoku(cell_number):  # second main function
+    #refills screen
+    SCREEN.fill("white")
+    #fills board
+    board = generate_py_board(cell_number)
+    pre_fill_board(cell_number, board)
 
     while True:
-        #refills screen and gets position of the Mouse
-        SCREEN.fill("white")
-        MOUSE_POS = pygame.mouse.get_pos()
-        draw_numbers(cell_number)
+        # initializes buttons
+        reset_button = Button(image=None, pos=(WIDTH // 3 - 75, HEIGHT - 60), text="Reset", font=get_font(50),
+                              color="black")
+        refresh_button = Button(image=None, pos=(WIDTH // 3 + 100, HEIGHT - 60), text="Refresh", font=get_font(50),
+                                color="black")
+        exit_button = Button(image=None, pos=(WIDTH // 3 + 300, HEIGHT - 60), text="Exit", font=get_font(50),
+                             color="black")
 
-        #initializes buttons
-        reset_button= Button(image=None, pos=(200,675), text="Reset", font=get_font(50),color="black")
-        refresh_button = Button(image=None, pos=(360,675), text="Refresh", font=get_font(50),color="black")
-        exit_button = Button(image=None, pos=(500,675), text="Exit", font=get_font(50),color="black")
+        # display each button
+        for i in [reset_button, refresh_button, exit_button]:
+            i.update(SCREEN)
 
+        #gets the position of the mouse
+        MOUSE_POS_GAME = pygame.mouse.get_pos()
 
-        #draws buttons
-        reset_button.update(SCREEN)
-        refresh_button.update(SCREEN)
-        exit_button.update(SCREEN)
-
-        #pygame mechanism for display
+    # pygame mechanism for display
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if reset_button.checkInput(MOUSE_POS):
+                if reset_button.checkInput(MOUSE_POS_GAME):
                     main_menu()
-                if refresh_button.checkInput(MOUSE_POS):
-                    pass
-                if exit_button.checkInput(MOUSE_POS):
+                    break
+                if refresh_button.checkInput(MOUSE_POS_GAME):
+                    pre_fill_board(cell_number,board)
+                if exit_button.checkInput(MOUSE_POS_GAME):
                     pygame.quit()
                     sys.exit()
         pygame.display.update()
@@ -63,6 +76,7 @@ def get_font(size): #credits to baraltech on youtube for code inspo
 def main_menu(): #initial screen
 
     while True:
+        SCREEN.fill("white")
         SCREEN.blit(BACKGROUND, (0,0))
         #set the color of background and get the position of the mouse
         MOUSE_POS = pygame.mouse.get_pos()
@@ -72,13 +86,14 @@ def main_menu(): #initial screen
 
         menu_text = title_font.render("Sudoku",0, "White")
         menu_rect = menu_text.get_rect(center=(WIDTH // 2, HEIGHT//3 -100))
+        SCREEN.blit(menu_text, menu_rect)
+
 
         #initialize buttons CREDIT to TA logan for dimensions
         easy_button = Button(image= BUTTON_BACKGROUND ,pos=(WIDTH // 2, HEIGHT//3 +50),text = "Easy", font=get_font(75), color="White" )
         medium_button = Button(BUTTON_BACKGROUND, (WIDTH // 2, HEIGHT//3 +200), "Medium", get_font(75), "White")
         hard_button = Button(BUTTON_BACKGROUND, (WIDTH // 2, HEIGHT//3 +350), "Hard", get_font(75), "White")
 
-        SCREEN.blit(menu_text, menu_rect)
 
         #display each button
         for i in [easy_button, medium_button, hard_button]:
@@ -91,17 +106,20 @@ def main_menu(): #initial screen
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if easy_button.checkInput(MOUSE_POS):
-                    cells = 30
-                    sudoku(cells)
+                    sudoku(30)
                 if medium_button.checkInput(MOUSE_POS):
-                    cells = 40
-                    sudoku(cells)
+                    sudoku(40)
                 if hard_button.checkInput(MOUSE_POS):
-                    cells = 50
-                    sudoku(cells)
+                    sudoku(50)
         pygame.display.update()
 
 
+if __name__ == '__main__':
+    # initialization of variables
+    pygame.init()
+    pygame.display.set_caption("Sudoku Group 12^2")
+    cells = 0
+    ACTUAL_FONT = pygame.font.Font(None, 60)
+    start = main_menu()
 
 
-main_menu()
