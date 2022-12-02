@@ -29,8 +29,8 @@ class Board:
             print()
 
 
-    def mark_square(self, row, col, chip_type):
-        self.board[row][col] = chip_type
+    def mark_square(self, row, col, number):
+        self.board[row][col] = number
         self.update_cells()
 
     def update_cells(self):

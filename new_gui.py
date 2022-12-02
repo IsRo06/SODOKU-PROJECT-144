@@ -31,6 +31,8 @@ def pre_fill_board(cell_number, board_to_use):
                 pygame_board = ACTUAL_FONT.render(str(board_to_use[i][j]), 1, (0,0,0))
                 SCREEN.blit (pygame_board, (i* SQUARE_SIZE+15, j* SQUARE_SIZE +15))
 
+
+
 def sudoku(cell_number):  # second main function
     #refills screen
     SCREEN.fill("white")
@@ -60,6 +62,11 @@ def sudoku(cell_number):  # second main function
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                #checks for what position was clicked
+                clicked_row = int(MOUSE_POS_GAME[0]/SQUARE_SIZE)
+                clicked_col = int(MOUSE_POS_GAME[1]/SQUARE_SIZE)
+                print(clicked_row, clicked_col)
+
                 if reset_button.checkInput(MOUSE_POS_GAME):
                     main_menu()
                     break
@@ -68,6 +75,7 @@ def sudoku(cell_number):  # second main function
                 if exit_button.checkInput(MOUSE_POS_GAME):
                     pygame.quit()
                     sys.exit()
+
         pygame.display.update()
 
 def get_font(size): #credits to baraltech on youtube for code inspo

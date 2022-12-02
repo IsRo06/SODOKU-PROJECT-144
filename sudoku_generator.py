@@ -1,4 +1,6 @@
-import math, random, copy
+import math, random, copy, pygame
+from constants import *
+from cell import *
 
 
 class SudokuGenerator:
@@ -6,7 +8,36 @@ class SudokuGenerator:
         self.row_length = row_length
         self.removed_cells = removed_cells
         self.board = [[0 for j in range(self.row_length)] for i in range(self.row_length)]
+        self.board_empty = self.board
         self.box_length = int(math.sqrt(self.row_length))
+        self.height = HEIGHT
+        self.width = WIDTH
+        self.screen = SCREEN
+        self.rows = row_length
+        self.cols = row_length
+        self.cells = [[Cell(self.board[i][j], i, j, self.height // self.rows,
+                            self.width // self.cols) for j in range(row_length)] for i in range(row_length)]
+
+    def draw(self):
+        # draw lines
+        for i in range(1, 9):
+            pygame.draw.line(self.screen, LINE_COLOR, (0, SQUARE_SIZE * i),
+                             (BOARD_WIDTH, SQUARE_SIZE * i), LINE_WIDTH)
+        # draw vertical lines
+        for i in range(1, 9):
+            pygame.draw.line(self.screen, LINE_COLOR, (SQUARE_SIZE * i, 0),
+                             (SQUARE_SIZE * i, BOARD_HEIGHT), LINE_WIDTH)
+
+        for i in range(self.rows):
+            for j in range(self.cols):
+                self.cells[i][j].draw(self.screen)
+
+    def update_cells(self):
+        self.cells = [[Cell(self.board[i][j], i, j, self.height // self.rows,
+                            self.width // self.cols) for j in range(self.cols)] for i in range(self.rows)]
+    def mark_square(self, row, col, number):
+        self.board[row][col] = number
+        self.update_cells()
 
     def get_board(self):
         return self.board
@@ -157,6 +188,9 @@ class SudokuGenerator:
             if row == 9:
                 row = 0
 
+    def reset_board(self):
+        self.board = self.board_empty
+        self.update_cells()
     '''
     DO NOT CHANGE
     Provided for students
@@ -207,6 +241,7 @@ class SudokuGenerator:
     def fill_values(self):
         self.fill_diagonal()
         self.fill_remaining(0, self.box_length)
+
 
 
 '''
