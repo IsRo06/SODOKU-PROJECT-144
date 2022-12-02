@@ -1,11 +1,27 @@
 import pygame, sys
 from button import *
 from constants import *
+from sudoku_generator import *
+from cell import *
 
+#initialization of variables
 pygame.init()
 pygame.display.set_caption("Sudoku Group 12^2")
 cells = 0
 
+def draw_lines(): #draws line in board
+    #prints horizontal line
+    for i in range (1, 9):
+        pygame.draw.line(SCREEN, LINE_COLOR, (0, i* SQUARE_SIZE), (WIDTH, i *SQUARE_SIZE), LINE_WIDTH)
+    #prints vertical line
+    for i in range (1,9):
+        pygame.draw.line(SCREEN, LINE_COLOR, (i* SQUARE_SIZE, 0), (i* SQUARE_SIZE, HEIGHT), LINE_WIDTH)
+
+
+def draw_numbers(cell_removed): #draws the numbers on the
+    draw_lines()
+    three = Cell("1" ,5, 4, HEIGHT, WIDTH)
+    three.draw(SCREEN)
 
 def sudoku(cell_number):  # second main function
 
@@ -13,7 +29,7 @@ def sudoku(cell_number):  # second main function
         #refills screen and gets position of the Mouse
         SCREEN.fill("white")
         MOUSE_POS = pygame.mouse.get_pos()
-
+        draw_numbers(cell_number)
 
         #initializes buttons
         reset_button= Button(image=None, pos=(200,675), text="Reset", font=get_font(50),color="black")
@@ -85,8 +101,6 @@ def main_menu(): #initial screen
                     sudoku(cells)
         pygame.display.update()
 
-def draw_lines(): #draws line in board
-    pass
 
 
 
