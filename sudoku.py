@@ -203,6 +203,7 @@ def sudoku(cell_number):  # second main function
                     number = 9
                 else:
                     #pop up when no number key is pressed
+                    number = 0
                     pop_up = Button(BLUE_BACKGROUND,(WIDTH // 2, HEIGHT//3+75),"Invalid Input",get_font(50),"White")
                     small_text = Button(None, (WIDTH // 2, HEIGHT//3+105), "Click anywhere to resume", get_font(25), "White")
                     pop_up.update(SCREEN)
