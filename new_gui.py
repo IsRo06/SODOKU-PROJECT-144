@@ -1,23 +1,17 @@
-import pygame, sys
+import sys
+
+import pygame
+
 from button import *
-from constants import *
-from sudoku_generator import *
 from cell import *
+from sudoku_generator import *
 
 
-def draw_lines(): #draws line in board
-    #prints horizontal line
-    for i in range (1, 9):
-        pygame.draw.line(SCREEN, LINE_COLOR, (0, i* SQUARE_SIZE), (WIDTH, i *SQUARE_SIZE), LINE_WIDTH)
-    #prints vertical line
-    for i in range (1,9):
-        pygame.draw.line(SCREEN, LINE_COLOR, (i* SQUARE_SIZE, 0), (i* SQUARE_SIZE, HEIGHT), LINE_WIDTH)
 def generate_py_board(cell_number):
-    psudo_board = generate_sudo(9, cell_number)
-    psudo_board = psudo_board[1]
-    return psudo_board
+    pass
 
 def pre_fill_board(cell_number, board_to_use):
+    SCREEN.fill("White")
     board = SudokuGenerator(9, cell_number)
     board.draw()
 
@@ -32,13 +26,27 @@ def pre_fill_board(cell_number, board_to_use):
                 SCREEN.blit (pygame_board, (i* SQUARE_SIZE+15, j* SQUARE_SIZE +15))
 
 
+def if_winner(board, answer_board):
+    if board == answer_board:
+        return True
+    else:
+        return False
 
 def sudoku(cell_number):  # second main function
     #refills screen
     SCREEN.fill("white")
+    #initialized board
+    psudo_board = SudokuGenerator(9, cell_number)
+    psudo_board.fill_values()
+    answer_board = copy.deepcopy(psudo_board.get_board())
+    psudo_board.remove_cells()
+    usable_board= psudo_board.get_board()
+    empty_board = copy.deepcopy(psudo_board.get_board())
+
+
     #fills board
-    board = generate_py_board(cell_number)
-    pre_fill_board(cell_number, board)
+    pre_fill_board(cell_number, usable_board)
+    number = "0"
 
     while True:
         # initializes buttons
@@ -63,18 +71,64 @@ def sudoku(cell_number):  # second main function
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 #checks for what position was clicked
-                clicked_row = int(MOUSE_POS_GAME[0]/SQUARE_SIZE)
-                clicked_col = int(MOUSE_POS_GAME[1]/SQUARE_SIZE)
-                print(clicked_row, clicked_col)
+                clicked_col = int(MOUSE_POS_GAME[0]/SQUARE_SIZE)
+                clicked_row = int(MOUSE_POS_GAME[1]/SQUARE_SIZE)
+                print(f"Position pressed{clicked_col,clicked_row}")
 
+                if clicked_row <= 8:
+                    print(f"INSIDE")
+                    if empty_board[clicked_col][clicked_row] == 0:
+                        print(f"EMPTYYYYY")
+                        psudo_board.mark_square(clicked_col, clicked_row, 0)
+                        usable_board = psudo_board.get_board()
+                        pre_fill_board(cell_number, usable_board)
+
+                #reset button
                 if reset_button.checkInput(MOUSE_POS_GAME):
                     main_menu()
                     break
                 if refresh_button.checkInput(MOUSE_POS_GAME):
-                    pre_fill_board(cell_number,board)
+                    for i in range(9):
+                        for j in range(9):
+                            if empty_board[i][j] == 0 and usable_board[i][j] != empty_board[i][j]:
+                                psudo_board.mark_square(i, j, 0)
+                                usable_board = psudo_board.get_board()
+                                pre_fill_board(cell_number, usable_board)
+
+                    pre_fill_board(cell_number, usable_board)
+
                 if exit_button.checkInput(MOUSE_POS_GAME):
                     pygame.quit()
                     sys.exit()
+            #answers for each key press
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    number = 1
+                if event.key == pygame.K_2:
+                    number = 2
+                if event.key == pygame.K_3:
+                    number = 3
+                if event.key == pygame.K_4:
+                    number = 4
+                if event.key == pygame.K_5:
+                    number = 5
+                if event.key == pygame.K_6:
+                    number = 6
+                if event.key == pygame.K_7:
+                    number = 7
+                if event.key == pygame.K_8:
+                    number = 8
+                if event.key == pygame.K_9:
+                    number = 9
+                else:
+                    print(f"Error")
+
+                # check if space is empty and use user input in board
+                if psudo_board.available_square(clicked_col, clicked_row):
+                    psudo_board.mark_square(clicked_col,clicked_row, number)
+                    usable_board_2 = psudo_board.get_board()
+                    pre_fill_board(cell_number, usable_board_2)
+
 
         pygame.display.update()
 

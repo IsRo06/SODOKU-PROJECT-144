@@ -31,13 +31,19 @@ class SudokuGenerator:
         for i in range(self.rows):
             for j in range(self.cols):
                 self.cells[i][j].draw(self.screen)
-
     def update_cells(self):
         self.cells = [[Cell(self.board[i][j], i, j, self.height // self.rows,
                             self.width // self.cols) for j in range(self.cols)] for i in range(self.rows)]
-    def mark_square(self, row, col, number):
-        self.board[row][col] = number
+    def mark_square(self, col, row, number):
+        self.board[col][row] = number
         self.update_cells()
+
+    def restart_board(self):
+            self.board =self.board_empty
+            self.update_cells()
+    def available_square(self, col, row):
+        print(f"number in selected area {self.board[col][row]}")
+        return self.board[col][row] == 0
 
     def get_board(self):
         return self.board
