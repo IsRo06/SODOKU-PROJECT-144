@@ -21,34 +21,55 @@ class SudokuGenerator:
     def draw(self):
         # draw lines
         for i in range(1, 9):
-            pygame.draw.line(self.screen, LINE_COLOR, (0, SQUARE_SIZE * i),
-                             (BOARD_WIDTH, SQUARE_SIZE * i), LINE_WIDTH)
+            if i % 3 == 0:
+                pygame.draw.line(self.screen, DARKER_LINE_COLOR, (0, SQUARE_SIZE * i),
+                             (BOARD_WIDTH, SQUARE_SIZE * i), THICK_LINE_WIDTH)
+            else:
+                pygame.draw.line(self.screen, LINE_COLOR, (0, SQUARE_SIZE * i),
+                                 (BOARD_WIDTH, SQUARE_SIZE * i), LINE_WIDTH)
         # draw vertical lines
         for i in range(1, 9):
-            pygame.draw.line(self.screen, LINE_COLOR, (SQUARE_SIZE * i, 0),
-                             (SQUARE_SIZE * i, BOARD_HEIGHT), LINE_WIDTH)
+            if i % 3 == 0:
+                pygame.draw.line(self.screen, DARKER_LINE_COLOR, (SQUARE_SIZE * i, 0),
+                             (SQUARE_SIZE * i, BOARD_HEIGHT), THICK_LINE_WIDTH)
+            else:
+                pygame.draw.line(self.screen, LINE_COLOR, (SQUARE_SIZE * i, 0),
+                                 (SQUARE_SIZE * i, BOARD_HEIGHT), LINE_WIDTH)
 
         for i in range(self.rows):
             for j in range(self.cols):
                 self.cells[i][j].draw(self.screen)
     def update_cells(self):
+        #updates cells when changes are made
         self.cells = [[Cell(self.board[i][j], i, j, self.height // self.rows,
                             self.width // self.cols) for j in range(self.cols)] for i in range(self.rows)]
     def mark_square(self, col, row, number):
+        #marks numbers in board
         self.board[col][row] = number
         self.update_cells()
 
+    def board_is_full(self):
+        #checks if board is full
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.board[i][j] == 0:
+                    return False
+        return True
     def restart_board(self):
+            #resets the board to its original values
             self.board =self.board_empty
             self.update_cells()
+
     def available_square(self, col, row):
-        print(f"number in selected area {self.board[col][row]}")
+        #returns true if a square is available
         return self.board[col][row] == 0
 
     def get_board(self):
+        #returns board as list
         return self.board
 
     def print_board(self):
+        #prints board to console
         the_board = self.get_board()
         for item in the_board:
             for i in item:
@@ -195,6 +216,7 @@ class SudokuGenerator:
                 row = 0
 
     def reset_board(self):
+        #resets board to original values
         self.board = self.board_empty
         self.update_cells()
     '''
@@ -273,6 +295,7 @@ def generate_sudoku(size, removed):
     return board
 
 def generate_sudo(size, removed):
+    #initializes a sudoku object
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
     board = copy.deepcopy(sudoku.get_board())

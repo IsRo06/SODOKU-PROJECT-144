@@ -14,19 +14,20 @@ class Cell:
         self.number = val
 
     def draw(self, screen):
+        #assigns the correct values to the cells on the board
 
         number_font = pygame.font.Font(FONT, 60)
-        one_surf = number_font.render('1', True, CROSS_COLOR)
-        two_surf = number_font.render('2', 0, CROSS_COLOR)
-        three_surf = number_font.render('3', 0, CROSS_COLOR)
-        four_surf = number_font.render('4', 0, CROSS_COLOR)
-        five_surf = number_font.render('5', 0, CROSS_COLOR)
-        six_surf = number_font.render('6', 0, CROSS_COLOR)
-        seven_surf = number_font.render('7', 0, CROSS_COLOR)
-        eight_surf = number_font.render('8', 0, CROSS_COLOR)
-        nine_surf = number_font.render('9', 0, CROSS_COLOR)
+        one_surf = number_font.render("1", True, LINE_COLOR)
+        two_surf = number_font.render('2', True, CROSS_COLOR)
+        three_surf = number_font.render('3', True, CROSS_COLOR)
+        four_surf = number_font.render('4', True, CROSS_COLOR)
+        five_surf = number_font.render('5', True, CROSS_COLOR)
+        six_surf = number_font.render('6', True, CROSS_COLOR)
+        seven_surf = number_font.render('7', True, CROSS_COLOR)
+        eight_surf = number_font.render('8', True, CROSS_COLOR)
+        nine_surf = number_font.render('9', True, CROSS_COLOR)
         if self.selected:
-            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.col *
+            pygame.draw.rect(screen, "yellow", pygame.Rect(self.col *
                                                               SQUARE_SIZE, self.row * SQUARE_SIZE, SQUARE_SIZE,
                                                               SQUARE_SIZE), 12)
             self.selected = False
