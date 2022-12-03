@@ -109,13 +109,11 @@ def sudoku(cell_number):  # second main function
     empty_board = copy.deepcopy(psudo_board.get_board())
 
 
+
     #fills board
     pre_fill_board(cell_number, usable_board, empty_board)
-    number = "0"
 
     while True:
-
-
 
         # initializes buttons
         reset_button = Button(image=None, pos=(WIDTH // 3 - 75, HEIGHT - 60), text="Reset", font=get_font(50),
@@ -135,7 +133,7 @@ def sudoku(cell_number):  # second main function
 
 
     # pygame mechanism for display
-        for event in pygame.event.get()
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -181,25 +179,26 @@ def sudoku(cell_number):  # second main function
                     sys.exit()
 
             #answers for each key press
+
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_1:
                     number = 1
-                if event.key == pygame.K_2:
+                elif event.key == pygame.K_2:
                     number = 2
-                if event.key == pygame.K_3:
+                elif event.key == pygame.K_3:
                     number = 3
-                if event.key == pygame.K_4:
+                elif event.key == pygame.K_4:
                     number = 4
-                if event.key == pygame.K_5:
+                elif event.key == pygame.K_5:
                     number = 5
-                if event.key == pygame.K_6:
+                elif event.key == pygame.K_6:
                     number = 6
-                if event.key == pygame.K_7:
+                elif event.key == pygame.K_7:
                     number = 7
-                if event.key == pygame.K_8:
+                elif event.key == pygame.K_8:
                     number = 8
-                if event.key == pygame.K_9:
+                elif event.key == pygame.K_9:
                     number = 9
                 else:
                     #pop up when no number key is pressed
@@ -209,10 +208,11 @@ def sudoku(cell_number):  # second main function
                     small_text.update(SCREEN)
                     continue
 
+
+
                 # checks for what position was clicked
                 clicked_col = int(MOUSE_POS_GAME[0] / SQUARE_SIZE)
                 clicked_row = int(MOUSE_POS_GAME[1] / SQUARE_SIZE)
-
 
                 # check if space is empty and use user input in board
                 if psudo_board.available_square(clicked_col, clicked_row):
